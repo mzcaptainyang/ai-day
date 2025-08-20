@@ -1,0 +1,96 @@
+[
+  {
+    "id": "qt001",
+    "jobLevel": "senior",
+    "category": "technical",
+    "questions": [
+      {
+        "question": "请详细介绍React Hooks的底层实现原理，特别是useState和useEffect的工作机制。",
+        "followUps": [
+          "useEffect的依赖数组是如何进行比较的？",
+          "为什么Hooks必须在组件顶层调用？",
+          "如何实现一个自定义Hook来管理复杂状态？"
+        ],
+        "evaluationCriteria": [
+          "对Hooks底层机制的理解深度",
+          "能否解释Fiber架构相关概念",
+          "实际应用经验的体现"
+        ],
+        "idealAnswer": "React Hooks基于Fiber架构实现，每个Hook都对应一个Hook对象，通过链表结构存储在Fiber节点上。useState通过reducer机制管理状态更新，useEffect通过effect链表在commit阶段执行副作用..."
+      },
+      {
+        "question": "设计一个高性能的前端缓存策略，考虑多级缓存、缓存失效、数据一致性等问题。",
+        "followUps": [
+          "如何处理缓存穿透和缓存雪崩？",
+          "如何设计缓存Key的命名规范？",
+          "如何监控缓存的命中率和性能？"
+        ],
+        "evaluationCriteria": [
+          "缓存策略的完整性",
+          "对性能优化的理解",
+          "实际项目经验"
+        ],
+        "idealAnswer": "多级缓存包括浏览器缓存、CDN缓存、应用层缓存。设计LRU/LFU算法，实现缓存预热，使用版本号解决一致性问题..."
+      }
+    ]
+  },
+  {
+    "id": "qt002",
+    "jobLevel": "senior",
+    "category": "behavioral",
+    "questions": [
+      {
+        "question": "请描述一次你在项目中遇到重大技术分歧的情况，你是如何处理的？",
+        "followUps": [
+          "当时有哪些不同的技术方案？",
+          "你是如何说服团队采用你的方案的？",
+          "如果再次遇到类似情况，你会如何改进？"
+        ],
+        "evaluationCriteria": [
+          "沟通协调能力",
+          "技术判断力",
+          "团队合作精神",
+          "反思和改进能力"
+        ],
+        "idealAnswer": "应包含具体的场景描述、不同方案的技术对比、沟通过程、最终结果和反思总结"
+      },
+      {
+        "question": "在你的职业生涯中，你是如何持续学习和提升技术能力的？",
+        "followUps": [
+          "你通常如何选择学习的新技术？",
+          "如何平衡工作和学习的时间？",
+          "能分享一个最近学习的新技术吗？"
+        ],
+        "evaluationCriteria": [
+          "学习能力和方法",
+          "技术敏感度",
+          "自我驱动力",
+          "知识体系的完整性"
+        ],
+        "idealAnswer": "应体现系统性的学习方法、对技术趋势的关注、实践结合理论的学习方式"
+      }
+    ]
+  },
+  {
+    "id": "qt003",
+    "jobLevel": "senior",
+    "category": "management",
+    "questions": [
+      {
+        "question": "作为技术leader，你如何制定团队的技术发展路线图？",
+        "followUps": [
+          "如何平衡业务需求和技术债务？",
+          "如何评估技术方案的ROI？",
+          "如何推动技术标准的落地执行？"
+        ],
+        "evaluationCriteria": [
+          "战略思维能力",
+          "技术规划能力",
+          "业务理解能力",
+          "执行落地能力"
+        ],
+        "idealAnswer": "需要结合业务战略、技术发展趋势、团队能力现状，制定分阶段的技术规划，建立评估机制"
+      }
+    ]
+  }
+]

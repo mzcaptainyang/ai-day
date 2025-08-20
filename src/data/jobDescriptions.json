@@ -1,0 +1,78 @@
+[
+  {
+    "id": "job001",
+    "title": "高级前端工程师",
+    "department": "技术部",
+    "level": "senior",
+    "requirements": [
+      "5年以上前端开发经验",
+      "精通React、Vue等主流前端框架",
+      "熟悉TypeScript、JavaScript",
+      "有大型项目架构经验",
+      "良好的团队协作能力"
+    ],
+    "responsibilities": [
+      "负责前端架构设计和技术选型",
+      "参与产品需求讨论和技术方案设计",
+      "指导初级开发人员",
+      "保证代码质量和项目进度",
+      "持续优化产品性能和用户体验"
+    ],
+    "skills": {
+      "technical": [
+        "React",
+        "Vue",
+        "TypeScript",
+        "Node.js",
+        "Webpack",
+        "微前端",
+        "性能优化"
+      ],
+      "soft": ["团队协作", "沟通能力", "问题解决", "学习能力"]
+    },
+    "salaryRange": {
+      "min": 25000,
+      "max": 40000
+    },
+    "location": "北京",
+    "type": "full-time"
+  },
+  {
+    "id": "job002",
+    "title": "Java后端工程师",
+    "department": "技术部",
+    "level": "mid",
+    "requirements": [
+      "3年以上Java开发经验",
+      "熟悉Spring Boot、Spring Cloud",
+      "熟悉MySQL、Redis等数据库",
+      "有微服务架构经验",
+      "了解消息队列、分布式系统"
+    ],
+    "responsibilities": [
+      "负责后端服务开发和维护",
+      "参与系统架构设计",
+      "优化系统性能",
+      "处理生产环境问题",
+      "编写技术文档"
+    ],
+    "skills": {
+      "technical": [
+        "Java",
+        "Spring Boot",
+        "MySQL",
+        "Redis",
+        "Docker",
+        "Kubernetes",
+        "微服务"
+      ],
+      "soft": ["逻辑思维", "问题分析", "责任心", "学习能力"]
+    },
+    "salaryRange": {
+      "min": 18000,
+      "max": 30000
+    },
+    "location": "北京",
+    "type": "full-time"
+  }
+]

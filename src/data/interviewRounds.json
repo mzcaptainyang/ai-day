@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ir001",
+    "type": "hr",
+    "candidateId": "c001",
+    "interviewerId": "u001",
+    "status": "completed",
+    "scheduledTime": "2024-01-16T10:00:00Z",
+    "actualStartTime": "2024-01-16T10:00:00Z",
+    "actualEndTime": "2024-01-16T10:45:00Z",
+    "questions": [
+      {
+        "id": "q001",
+        "question": "请简单介绍一下自己和你的工作经历。",
+        "category": "behavioral",
+        "difficulty": "easy",
+        "keyPoints": ["工作经验", "技能匹配", "表达能力"],
+        "timeLimit": 5
+      },
+      {
+        "id": "q002",
+        "question": "为什么想要离开当前公司？为什么选择我们公司？",
+        "category": "behavioral",
+        "difficulty": "medium",
+        "keyPoints": ["职业规划", "公司认知", "离职原因合理性"],
+        "timeLimit": 3
+      },
+      {
+        "id": "q003",
+        "question": "对于薪资和福利有什么期望？",
+        "category": "situational",
+        "difficulty": "medium",
+        "keyPoints": ["薪资期望合理性", "谈判能力"],
+        "timeLimit": 2
+      }
+    ],
+    "evaluation": {
+      "softSkills": {
+        "communication": 8,
+        "teamwork": 7,
+        "problemSolving": 7,
+        "adaptability": 8,
+        "notes": "表达清晰，逻辑性强，对公司有一定了解"
+      },
+      "culturalFit": {
+        "score": 8,
+        "notes": "价值观契合，工作态度积极"
+      },
+      "overallScore": 8,
+      "overallNotes": "候选人综合素质良好，符合岗位基本要求，建议进入下一轮面试",
+      "recommendation": "hire"
+    },
+    "notes": "候选人表现良好，沟通能力强，对技术有热情，符合公司文化",
+    "feedback": "继续关注技术深度的考察",
+    "recommendation": "pass"
+  },
+  {
+    "id": "ir002",
+    "type": "tech_1",
+    "candidateId": "c001",
+    "interviewerId": "u002",
+    "status": "completed",
+    "scheduledTime": "2024-01-17T14:00:00Z",
+    "actualStartTime": "2024-01-17T14:00:00Z",
+    "actualEndTime": "2024-01-17T15:30:00Z",
+    "questions": [
+      {
+        "id": "q004",
+        "question": "请详细介绍React Hooks的底层实现原理，特别是useState和useEffect的工作机制。",
+        "category": "technical",
+        "difficulty": "hard",
+        "expectedAnswer": "React Hooks基于Fiber架构实现，每个Hook都对应一个Hook对象...",
+        "keyPoints": ["Fiber架构理解", "Hook实现原理", "实际应用经验"],
+        "followUpQuestions": [
+          "useEffect的依赖数组是如何进行比较的？",
+          "为什么Hooks必须在组件顶层调用？"
+        ],
+        "timeLimit": 15
+      },
+      {
+        "id": "q005",
+        "question": "设计一个高性能的前端缓存策略，考虑多级缓存、缓存失效、数据一致性等问题。",
+        "category": "technical",
+        "difficulty": "hard",
+        "keyPoints": ["缓存策略设计", "性能优化", "系统设计能力"],
+        "timeLimit": 20
+      },
+      {
+        "id": "q006",
+        "question": "在你的项目中是如何进行性能优化的？请举具体例子。",
+        "category": "technical",
+        "difficulty": "medium",
+        "keyPoints": ["性能优化经验", "问题分析能力", "实际效果"],
+        "timeLimit": 10
+      }
+    ],
+    "evaluation": {
+      "technicalSkills": {
+        "score": 9,
+        "notes": "技术功底扎实，对React原理理解深入，有丰富的性能优化经验",
+        "strengths": [
+          "React原理掌握深入",
+          "性能优化经验丰富",
+          "系统设计思路清晰"
+        ],
+        "weaknesses": ["部分新技术了解不够深入"]
+      },
+      "softSkills": {
+        "communication": 8,
+        "problemSolving": 9,
+        "adaptability": 8,
+        "notes": "能清晰表达技术思路，解决问题思路清晰"
+      },
+      "culturalFit": {
+        "score": 8,
+        "notes": "技术热情度高，学习能力强"
+      },
+      "overallScore": 9,
+      "overallNotes": "技术能力突出，符合高级工程师要求，建议进入下一轮",
+      "recommendation": "strong_hire"
+    },
+    "notes": "候选人技术实力很强，对前端技术有深入理解，项目经验丰富",
+    "feedback": "技术能力优秀，可以重点考察软实力和团队协作能力",
+    "recommendation": "pass"
+  }
+]

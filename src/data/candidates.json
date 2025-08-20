@@ -1,0 +1,161 @@
+[
+  {
+    "id": "c001",
+    "name": "陈小明",
+    "email": "chen.xiaoming@email.com",
+    "phone": "13800138001",
+    "resume": {
+      "personalInfo": {
+        "name": "陈小明",
+        "email": "chen.xiaoming@email.com",
+        "phone": "13800138001",
+        "location": "北京市朝阳区"
+      },
+      "education": [
+        {
+          "degree": "本科",
+          "school": "北京理工大学",
+          "major": "计算机科学与技术",
+          "graduationYear": 2018
+        }
+      ],
+      "experience": [
+        {
+          "company": "字节跳动",
+          "position": "前端工程师",
+          "duration": "2020.06 - 2023.12",
+          "responsibilities": [
+            "负责抖音Web端核心功能开发",
+            "参与前端架构升级和性能优化",
+            "指导实习生和初级工程师",
+            "与产品、设计团队协作完成需求开发"
+          ],
+          "achievements": [
+            "将首屏加载时间优化40%",
+            "主导前端监控系统建设",
+            "获得年度优秀员工奖"
+          ]
+        },
+        {
+          "company": "美团",
+          "position": "前端开发工程师",
+          "duration": "2018.07 - 2020.05",
+          "responsibilities": [
+            "负责外卖商家后台系统开发",
+            "维护和优化现有业务系统",
+            "参与技术分享和团队建设"
+          ],
+          "achievements": ["完成商家后台重构项目", "提升开发效率20%"]
+        }
+      ],
+      "skills": {
+        "technical": [
+          "React",
+          "Vue",
+          "TypeScript",
+          "Node.js",
+          "Webpack",
+          "微前端",
+          "性能优化"
+        ],
+        "languages": ["中文(母语)", "英语(CET-6)"],
+        "certifications": ["阿里云开发者认证"]
+      },
+      "projects": [
+        {
+          "name": "抖音Web端重构项目",
+          "description": "主导抖音Web端架构重构，采用微前端架构",
+          "technologies": ["React", "TypeScript", "qiankun", "Webpack"],
+          "achievements": [
+            "提升页面加载速度40%",
+            "降低内存占用30%",
+            "支持多团队并行开发"
+          ]
+        },
+        {
+          "name": "前端监控系统",
+          "description": "从0到1建设前端性能监控和错误追踪系统",
+          "technologies": ["Node.js", "InfluxDB", "Grafana", "Sentry"],
+          "achievements": [
+            "覆盖100%前端应用",
+            "错误发现时间缩短80%",
+            "性能问题定位效率提升60%"
+          ]
+        }
+      ]
+    },
+    "appliedPosition": "job001",
+    "status": "interviewing",
+    "createdAt": "2024-01-15T09:00:00Z",
+    "interviewRounds": ["ir001", "ir002"]
+  },
+  {
+    "id": "c002",
+    "name": "刘小红",
+    "email": "liu.xiaohong@email.com",
+    "phone": "13800138002",
+    "resume": {
+      "personalInfo": {
+        "name": "刘小红",
+        "email": "liu.xiaohong@email.com",
+        "phone": "13800138002",
+        "location": "北京市海淀区"
+      },
+      "education": [
+        {
+          "degree": "硕士",
+          "school": "清华大学",
+          "major": "软件工程",
+          "graduationYear": 2020
+        }
+      ],
+      "experience": [
+        {
+          "company": "腾讯",
+          "position": "后端工程师",
+          "duration": "2020.07 - 2024.01",
+          "responsibilities": [
+            "负责微信支付核心服务开发",
+            "参与高并发系统架构设计",
+            "负责系统性能优化和稳定性保障",
+            "参与技术选型和架构评审"
+          ],
+          "achievements": [
+            "支持双11峰值QPS达10万+",
+            "系统可用性达99.99%",
+            "获得技术突破奖"
+          ]
+        }
+      ],
+      "skills": {
+        "technical": [
+          "Java",
+          "Spring Boot",
+          "MySQL",
+          "Redis",
+          "Kafka",
+          "Docker",
+          "Kubernetes"
+        ],
+        "languages": ["中文(母语)", "英语(雅思7.0)"],
+        "certifications": ["AWS解决方案架构师"]
+      },
+      "projects": [
+        {
+          "name": "微信支付系统重构",
+          "description": "主导微信支付核心系统架构重构，提升系统性能和稳定性",
+          "technologies": ["Java", "Spring Cloud", "MySQL", "Redis", "Kafka"],
+          "achievements": [
+            "系统吞吐量提升3倍",
+            "响应时间降低50%",
+            "支持热部署零停机更新"
+          ]
+        }
+      ]
+    },
+    "appliedPosition": "job002",
+    "status": "screening",
+    "createdAt": "2024-01-20T14:30:00Z",
+    "interviewRounds": []
+  }
+]
