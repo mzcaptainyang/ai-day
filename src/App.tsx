@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import AIInterviewQuestions from "./pages/AIInterviewQuestions";
 import CandidateManagement from "./pages/CandidateManagement";
 import Dashboard from "./pages/Dashboard";
 import InterviewAnalysis from "./pages/InterviewAnalysis";
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/candidates" element={<CandidateManagement />} />
         <Route path="/interviews" element={<InterviewSchedule />} />
+        <Route path="/ai-questions" element={<AIInterviewQuestions />} />
         <Route path="/interview/:id" element={<InterviewConducting />} />
         <Route path="/reports" element={<InterviewReports />} />
         <Route path="/analysis" element={<InterviewAnalysis />} />
