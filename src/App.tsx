@@ -7,6 +7,7 @@ import InterviewAnalysis from "./pages/InterviewAnalysis";
 import InterviewConducting from "./pages/InterviewConducting";
 import InterviewReports from "./pages/InterviewReports";
 import InterviewSchedule from "./pages/InterviewSchedule";
+import ProjectHighlights from "./pages/ProjectHighlights";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/highlights" element={<ProjectHighlights />} />
         <Route path="/candidates" element={<CandidateManagement />} />
         <Route path="/interviews" element={<InterviewSchedule />} />
         <Route path="/ai-questions" element={<AIInterviewQuestions />} />

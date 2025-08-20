@@ -231,3 +231,4 @@ const AIAssistant = ({ isOpen, onClose }: AIAssistantProps) => {
 };
 
 export default AIAssistant;
+

@@ -5,6 +5,7 @@ import {
   FileText,
   Home,
   Settings,
+  Sparkles,
   User,
   Users,
 } from "lucide-react";
@@ -20,6 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigation = [
     { name: "仪表盘", href: "/dashboard", icon: Home },
+    { name: "项目亮点", href: "/highlights", icon: Sparkles },
     { name: "候选人管理", href: "/candidates", icon: Users },
     { name: "面试安排", href: "/interviews", icon: Calendar },
     { name: "AI 面试题", href: "/ai-questions", icon: Brain },

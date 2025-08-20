@@ -241,3 +241,4 @@ export interface InterviewSettings {
     passingScore: number;
   };
 }
+
