@@ -174,7 +174,7 @@ const InterviewReports = () => {
     let timestamp = new Date(round.actualStartTime || round.scheduledTime);
 
     if (round.type === "hr") {
-      // HR面试对话
+      // HR面试对话 - 大幅增加内容
       dialogues.push(
         {
           id: "d1",
@@ -194,9 +194,15 @@ const InterviewReports = () => {
             .slice(0, 3)
             .join("、")}等技术领域。我在${
             candidate.resume.experience[0]?.company
-          }工作期间，负责了多个重要项目的开发...`,
+          }工作期间，负责了多个重要项目的开发，包括用户中心系统、支付系统等核心模块。我具有良好的团队协作能力，曾带领5人团队完成了一个大型电商项目，项目上线后用户活跃度提升了30%。`,
           sentiment: "positive",
-          keywords: ["自我介绍", "工作经验", "技术技能"],
+          keywords: [
+            "自我介绍",
+            "工作经验",
+            "技术技能",
+            "项目经验",
+            "团队领导",
+          ],
         },
         {
           id: "d3",
@@ -212,13 +218,47 @@ const InterviewReports = () => {
           timestamp: addMinutes(timestamp, 4).toISOString(),
           speaker: "candidate",
           content:
-            "主要是希望能在一个更大的平台上发挥自己的能力，贵公司的技术实力和企业文化都很吸引我，我相信能在这里获得更好的职业发展。",
+            "主要是希望能在一个更大的平台上发挥自己的能力，贵公司的技术实力和企业文化都很吸引我，我相信能在这里获得更好的职业发展。现在的公司规模相对较小，技术栈比较单一，我希望能接触更多前沿技术，也希望能在更大的业务体量下锻炼自己的架构设计能力。",
           sentiment: "positive",
-          keywords: ["职业发展", "企业文化", "技术实力"],
+          keywords: ["职业发展", "企业文化", "技术实力", "业务挑战"],
+        },
+        {
+          id: "d5",
+          timestamp: addMinutes(timestamp, 6).toISOString(),
+          speaker: "interviewer",
+          content: "您对我们公司有什么了解吗？对这个职位有什么期望？",
+          sentiment: "neutral",
+          keywords: ["公司了解", "职位期望"],
+        },
+        {
+          id: "d6",
+          timestamp: addMinutes(timestamp, 7).toISOString(),
+          speaker: "candidate",
+          content:
+            "我了解贵公司是行业内的技术领先企业，在AI、大数据等方面有很强的技术积累。这个职位主要负责前端架构设计和团队管理，我希望能够运用我的技术经验，带领团队构建高质量的用户界面，同时也希望能在技术决策和团队建设方面发挥作用。我特别关注用户体验和性能优化，希望能在这方面有所贡献。",
+          sentiment: "positive",
+          keywords: ["公司认知", "技术架构", "团队管理", "用户体验"],
+        },
+        {
+          id: "d7",
+          timestamp: addMinutes(timestamp, 9).toISOString(),
+          speaker: "interviewer",
+          content: "您的薪资期望是多少？对于工作时间和加班有什么看法？",
+          sentiment: "neutral",
+          keywords: ["薪资期望", "工作时间", "加班"],
+        },
+        {
+          id: "d8",
+          timestamp: addMinutes(timestamp, 10).toISOString(),
+          speaker: "candidate",
+          content:
+            "薪资方面我希望能在25-30K之间，具体可以根据面试结果和公司标准来协商。关于工作时间，我理解互联网行业的特点，适度的加班是可以接受的，但我更倾向于通过提高工作效率和合理规划来平衡工作与生活。我相信高效的工作方式比简单的时间投入更重要。",
+          sentiment: "positive",
+          keywords: ["薪资协商", "工作平衡", "效率优先"],
         }
       );
     } else if (round.type === "tech_1") {
-      // 技术一面对话
+      // 技术一面对话 - 大幅增加内容
       dialogues.push(
         {
           id: "d1",
@@ -234,13 +274,19 @@ const InterviewReports = () => {
           timestamp: addMinutes(timestamp, 1).toISOString(),
           speaker: "candidate",
           content:
-            "React的生命周期分为三个阶段：挂载、更新和卸载。Hooks是React 16.8引入的新特性，它让我们可以在函数组件中使用状态和其他React特性。useState用于状态管理，useEffect用于副作用处理...",
+            "React的生命周期分为三个阶段：挂载、更新和卸载。挂载阶段包括constructor、componentDidMount等，更新阶段有componentDidUpdate、getSnapshotBeforeUpdate等，卸载阶段是componentWillUnmount。Hooks是React 16.8引入的新特性，它让我们可以在函数组件中使用状态和其他React特性。useState用于状态管理，useEffect用于副作用处理，相当于componentDidMount、componentDidUpdate和componentWillUnmount的组合。useEffect的依赖数组可以控制何时执行副作用。",
           sentiment: "positive",
-          keywords: ["React生命周期", "useState", "useEffect", "函数组件"],
+          keywords: [
+            "React生命周期",
+            "useState",
+            "useEffect",
+            "函数组件",
+            "副作用",
+          ],
         },
         {
           id: "d3",
-          timestamp: addMinutes(timestamp, 5).toISOString(),
+          timestamp: addMinutes(timestamp, 3).toISOString(),
           speaker: "interviewer",
           content: "很好，那您能说说如何优化React应用的性能吗？",
           sentiment: "positive",
@@ -248,10 +294,10 @@ const InterviewReports = () => {
         },
         {
           id: "d4",
-          timestamp: addMinutes(timestamp, 6).toISOString(),
+          timestamp: addMinutes(timestamp, 4).toISOString(),
           speaker: "candidate",
           content:
-            "React性能优化有很多方法：1. 使用React.memo避免不必要的重渲染；2. 使用useMemo和useCallback缓存计算结果和函数；3. 代码分割和懒加载；4. 虚拟列表处理大数据；5. 使用生产环境构建...",
+            "React性能优化有很多方法：1. 使用React.memo避免不必要的重渲染；2. 使用useMemo和useCallback缓存计算结果和函数；3. 代码分割和懒加载，使用React.lazy和Suspense；4. 虚拟列表处理大数据，如react-window；5. 使用生产环境构建；6. 避免在render中创建新对象和函数；7. 使用shouldComponentUpdate或PureComponent；8. 合理使用key prop；9. 图片懒加载和预加载。",
           sentiment: "positive",
           keywords: [
             "React.memo",
@@ -259,7 +305,185 @@ const InterviewReports = () => {
             "useCallback",
             "代码分割",
             "虚拟列表",
+            "懒加载",
           ],
+        },
+        {
+          id: "d5",
+          timestamp: addMinutes(timestamp, 6).toISOString(),
+          speaker: "interviewer",
+          content: "请解释一下JavaScript的闭包和原型链，以及ES6的新特性。",
+          sentiment: "neutral",
+          keywords: ["JavaScript", "闭包", "原型链", "ES6"],
+        },
+        {
+          id: "d6",
+          timestamp: addMinutes(timestamp, 7).toISOString(),
+          speaker: "candidate",
+          content:
+            "闭包是指函数能够访问其外部作用域的变量，即使外部函数已经返回。这创造了数据私有化的可能。原型链是JavaScript实现继承的机制，每个对象都有一个__proto__属性指向其原型。ES6引入了很多新特性：let/const块级作用域、箭头函数、模板字符串、解构赋值、Promise、async/await、class语法糖、模块化import/export、Set/Map数据结构等。这些特性大大提高了代码的可读性和开发效率。",
+          sentiment: "positive",
+          keywords: [
+            "闭包",
+            "原型链",
+            "作用域",
+            "箭头函数",
+            "Promise",
+            "async/await",
+          ],
+        },
+        {
+          id: "d7",
+          timestamp: addMinutes(timestamp, 9).toISOString(),
+          speaker: "interviewer",
+          content:
+            "您在项目中使用过哪些状态管理方案？Redux和Context API有什么区别？",
+          sentiment: "neutral",
+          keywords: ["状态管理", "Redux", "Context API"],
+        },
+        {
+          id: "d8",
+          timestamp: addMinutes(timestamp, 10).toISOString(),
+          speaker: "candidate",
+          content:
+            "我使用过Redux、Context API、Zustand和Valtio等状态管理方案。Redux适合大型应用，提供了可预测的状态管理，但模板代码较多。Context API是React内置的，适合中小型应用或者跨组件传递数据，但性能上可能不如Redux。Redux有中间件机制，支持异步处理，而Context在频繁更新时可能导致不必要的重渲染。在最近的项目中，我倾向于使用Zustand，它更轻量且API更简洁。",
+          sentiment: "positive",
+          keywords: ["Redux", "Context API", "Zustand", "状态管理", "中间件"],
+        },
+        {
+          id: "d9",
+          timestamp: addMinutes(timestamp, 12).toISOString(),
+          speaker: "interviewer",
+          content: "请手写一个防抖函数，并解释一下防抖和节流的区别。",
+          sentiment: "neutral",
+          keywords: ["防抖", "节流", "手写代码"],
+        },
+        {
+          id: "d10",
+          timestamp: addMinutes(timestamp, 13).toISOString(),
+          speaker: "candidate",
+          content:
+            "防抖是延迟执行，在事件停止触发一段时间后才执行；节流是限制执行频率，在一定时间内最多执行一次。防抖适用于搜索框输入、按钮点击；节流适用于滚动事件、鼠标移动。防抖函数实现：function debounce(func, delay) { let timer; return function() { clearTimeout(timer); timer = setTimeout(() => func.apply(this, arguments), delay); }; }",
+          sentiment: "positive",
+          keywords: ["防抖实现", "节流区别", "setTimeout", "apply"],
+        }
+      );
+    } else if (round.type === "tech_2") {
+      // 技术二面对话 - 新增
+      dialogues.push(
+        {
+          id: "d1",
+          timestamp: timestamp.toISOString(),
+          speaker: "interviewer",
+          content:
+            "欢迎来到技术二面，今天我们主要讨论系统设计和架构相关的问题。请设计一个高并发的电商系统架构。",
+          sentiment: "neutral",
+          keywords: ["系统设计", "高并发", "电商系统", "架构"],
+        },
+        {
+          id: "d2",
+          timestamp: addMinutes(timestamp, 1).toISOString(),
+          speaker: "candidate",
+          content:
+            "电商系统需要考虑高并发、高可用和数据一致性。我会采用微服务架构，将系统拆分为用户服务、商品服务、订单服务、支付服务等。前端使用CDN加速，后端使用负载均衡器分发请求。数据库采用读写分离，热点数据使用Redis缓存。对于秒杀等高并发场景，可以使用消息队列异步处理，限流熔断保护系统稳定性。",
+          sentiment: "positive",
+          keywords: ["微服务", "负载均衡", "读写分离", "Redis缓存", "消息队列"],
+        },
+        {
+          id: "d3",
+          timestamp: addMinutes(timestamp, 3).toISOString(),
+          speaker: "interviewer",
+          content: "如何保证分布式系统的数据一致性？CAP理论是什么？",
+          sentiment: "neutral",
+          keywords: ["数据一致性", "分布式", "CAP理论"],
+        },
+        {
+          id: "d4",
+          timestamp: addMinutes(timestamp, 4).toISOString(),
+          speaker: "candidate",
+          content:
+            "CAP理论指出分布式系统无法同时保证一致性(Consistency)、可用性(Availability)和分区容错性(Partition tolerance)。实际应用中通常选择CP或AP。数据一致性可以通过分布式事务、消息队列、事件溯源等方式保证。我倾向于使用最终一致性，通过补偿机制确保数据最终达到一致状态，这样既保证了性能又保证了数据正确性。",
+          sentiment: "positive",
+          keywords: ["CAP理论", "最终一致性", "分布式事务", "补偿机制"],
+        },
+        {
+          id: "d5",
+          timestamp: addMinutes(timestamp, 6).toISOString(),
+          speaker: "interviewer",
+          content: "前端性能优化有哪些策略？如何监控和排查性能问题？",
+          sentiment: "neutral",
+          keywords: ["前端优化", "性能监控", "问题排查"],
+        },
+        {
+          id: "d6",
+          timestamp: addMinutes(timestamp, 7).toISOString(),
+          speaker: "candidate",
+          content:
+            "前端性能优化包括：1.资源优化：压缩、合并、CDN；2.渲染优化：减少DOM操作、虚拟滚动；3.网络优化：HTTP/2、预加载、缓存；4.代码优化：Tree shaking、懒加载。监控方面使用Performance API、LightHouse、Web Vitals等工具。排查时关注首屏时间、加载时间、运行时性能，通过Chrome DevTools分析瓶颈。",
+          sentiment: "positive",
+          keywords: ["资源优化", "渲染优化", "Performance API", "Web Vitals"],
+        }
+      );
+    } else if (round.type === "vp") {
+      // VP面试对话 - 新增
+      dialogues.push(
+        {
+          id: "d1",
+          timestamp: timestamp.toISOString(),
+          speaker: "interviewer",
+          content:
+            "欢迎参加最终面试，我主要想了解您的技术规划和团队管理理念。您如何看待技术团队的发展方向？",
+          sentiment: "neutral",
+          keywords: ["技术规划", "团队管理", "发展方向"],
+        },
+        {
+          id: "d2",
+          timestamp: addMinutes(timestamp, 1).toISOString(),
+          speaker: "candidate",
+          content:
+            "我认为技术团队的发展应该紧密结合业务目标。首先要建立技术标准和最佳实践，确保代码质量；其次要关注团队成员的技术成长，通过技术分享、code review等方式提升整体水平；最后要保持对新技术的敏感度，但不盲目追求新技术，要结合业务场景选择合适的技术栈。我倾向于建设学习型团队，鼓励创新和试错。",
+          sentiment: "positive",
+          keywords: ["业务结合", "技术标准", "团队成长", "学习型团队"],
+        },
+        {
+          id: "d3",
+          timestamp: addMinutes(timestamp, 3).toISOString(),
+          speaker: "interviewer",
+          content: "如果要招聘新的团队成员，您会看重哪些素质？如何评估候选人？",
+          sentiment: "neutral",
+          keywords: ["招聘", "素质要求", "候选人评估"],
+        },
+        {
+          id: "d4",
+          timestamp: addMinutes(timestamp, 4).toISOString(),
+          speaker: "candidate",
+          content:
+            "我会从技术能力、学习能力、沟通协作和价值观四个维度评估。技术能力看基础知识和实践经验；学习能力看对新技术的接受度和自驱力；沟通协作看表达能力和团队融入度；价值观看是否认同公司文化。我倾向于招聘有潜力的人才，通过mentorship帮助他们快速成长，而不是只看当前的技术水平。",
+          sentiment: "positive",
+          keywords: [
+            "技术能力",
+            "学习能力",
+            "沟通协作",
+            "价值观",
+            "mentorship",
+          ],
+        },
+        {
+          id: "d5",
+          timestamp: addMinutes(timestamp, 6).toISOString(),
+          speaker: "interviewer",
+          content: "您对我们公司的技术栈和业务有什么建议？看到哪些优化空间？",
+          sentiment: "neutral",
+          keywords: ["技术建议", "业务优化", "改进空间"],
+        },
+        {
+          id: "d6",
+          timestamp: addMinutes(timestamp, 7).toISOString(),
+          speaker: "candidate",
+          content:
+            "从了解到的情况来看，贵公司技术栈比较现代化，但我觉得可以在以下方面优化：1.建设更完善的监控体系，及时发现和解决问题；2.加强自动化测试，提高发布质量；3.推进DevOps实践，提升交付效率；4.建设技术中台，避免重复开发。这些都需要逐步推进，我愿意在这方面贡献力量。",
+          sentiment: "positive",
+          keywords: ["监控体系", "自动化测试", "DevOps", "技术中台"],
         }
       );
     }
@@ -267,28 +491,145 @@ const InterviewReports = () => {
     return dialogues;
   };
 
-  // 生成AI对话分析
+  // 生成AI对话分析 - 大幅增强
   const generateAIAnalysisForDialogue = (
     dialogues: InterviewDialogue[]
   ): AIDialogueAnalysis[] => {
-    return dialogues.map((dialogue, index) => ({
-      id: `analysis_${dialogue.id}`,
-      timestamp: dialogue.timestamp,
-      analysisType:
+    const candidateAnalysisTemplates = [
+      "候选人回答逻辑清晰，专业知识扎实，表达能力强，展现出良好的技术基础",
+      "候选人对问题的理解准确，能够结合实际项目经验进行回答，体现了丰富的实践能力",
+      "候选人的回答显示出对技术细节的深入理解，具备解决复杂问题的能力",
+      "候选人表现出积极的学习态度和对新技术的敏感度，具备良好的成长潜力",
+      "候选人在回答中展现了团队协作意识和沟通能力，适合团队环境",
+      "候选人对行业趋势有清晰认知，具备前瞻性思维和规划能力",
+      "候选人的技术视野开阔，能够从多个角度分析问题，体现了架构思维",
+      "候选人在表述中展现了责任心和主动性，是值得培养的优秀人才",
+      "候选人对技术方案有自己的思考和见解，具备独立解决问题的能力",
+      "候选人展现出良好的代码规范意识和工程化思维，符合团队标准",
+    ];
+
+    const interviewerAnalysisTemplates = [
+      "面试官提问专业且有针对性，能够有效评估候选人的技术能力",
+      "面试官的问题设计合理，循序渐进地深入了解候选人的技术水平",
+      "面试官善于引导候选人展现真实的技术能力和项目经验",
+      "面试官的提问涵盖了理论和实践，能够全面评估候选人",
+      "面试官营造了良好的面试氛围，有助于候选人发挥真实水平",
+      "面试官的问题具有很好的区分度，能够识别出优秀候选人",
+      "面试官注重考察候选人的思维过程，而不仅仅是标准答案",
+      "面试官能够根据候选人的回答进行深入追问，挖掘更多信息",
+    ];
+
+    const sentimentAnalysisTemplates = {
+      positive: [
+        "语调积极向上，表达出对技术和工作的热情",
+        "回答中透露出自信和对未来的期待",
+        "表现出对挑战的积极态度和解决问题的决心",
+        "展现出对学习新技术的兴趣和动力",
+      ],
+      neutral: [
+        "语调平稳，表达客观理性",
+        "回答简洁明了，重点突出",
+        "保持专业的沟通风格",
+        "表达清晰，逻辑性强",
+      ],
+      negative: [
+        "在某些问题上表现出不确定性",
+        "对部分技术点的了解可能需要加强",
+        "在压力下的表现有待观察",
+        "需要更多的自信来展现真实能力",
+      ],
+    };
+
+    const keywordAnalysisTemplates = [
+      "识别出多个技术关键词，显示候选人的知识广度",
+      "关键词使用准确，体现出对技术概念的深入理解",
+      "技术术语运用恰当，展现了专业的技术背景",
+      "关键词覆盖了前端、后端、架构等多个领域",
+      "通过关键词分析可以看出候选人的技术偏好和专长",
+    ];
+
+    const competencyAnalysisTemplates = [
+      "技术基础扎实，能够胜任高级开发工程师岗位",
+      "项目经验丰富，具备解决复杂业务问题的能力",
+      "学习能力突出，能够快速适应新的技术环境",
+      "团队协作能力良好，适合在敏捷开发环境中工作",
+      "沟通表达能力强，能够清晰地传达技术方案",
+      "问题分析能力出色，能够从根本上解决技术难题",
+      "代码质量意识强，注重工程化和最佳实践",
+      "具备一定的架构设计能力，能够参与系统设计",
+    ];
+
+    const concernAnalysisTemplates = [
+      "建议在某些新兴技术方面加强学习和实践",
+      "可以通过更多的大型项目经验来提升综合能力",
+      "在团队管理方面可以积累更多经验",
+      "建议加强对业务理解，提升产品思维",
+      "可以在系统设计和架构方面继续深入学习",
+      "建议关注性能优化和用户体验方面的实践",
+      "可以加强对前沿技术趋势的关注和学习",
+    ];
+
+    return dialogues.map((dialogue, index) => {
+      const analysisType =
         index % 4 === 0
           ? "sentiment"
           : index % 4 === 1
           ? "keyword"
           : index % 4 === 2
           ? "competency"
-          : "concern",
-      content:
-        dialogue.speaker === "candidate"
-          ? "候选人回答逻辑清晰，专业知识扎实，表达能力强"
-          : "面试官提问专业且有针对性",
-      confidence: 85 + Math.random() * 10,
-      relatedDialogue: dialogue.id,
-    }));
+          : "concern";
+      let content = "";
+
+      if (dialogue.speaker === "candidate") {
+        switch (analysisType) {
+          case "sentiment":
+            const sentimentTemplates =
+              sentimentAnalysisTemplates[dialogue.sentiment || "neutral"];
+            content =
+              sentimentTemplates[
+                Math.floor(Math.random() * sentimentTemplates.length)
+              ];
+            break;
+          case "keyword":
+            content =
+              keywordAnalysisTemplates[
+                Math.floor(Math.random() * keywordAnalysisTemplates.length)
+              ];
+            break;
+          case "competency":
+            content =
+              competencyAnalysisTemplates[
+                Math.floor(Math.random() * competencyAnalysisTemplates.length)
+              ];
+            break;
+          case "concern":
+            content =
+              concernAnalysisTemplates[
+                Math.floor(Math.random() * concernAnalysisTemplates.length)
+              ];
+            break;
+          default:
+            content =
+              candidateAnalysisTemplates[
+                Math.floor(Math.random() * candidateAnalysisTemplates.length)
+              ];
+        }
+      } else {
+        content =
+          interviewerAnalysisTemplates[
+            Math.floor(Math.random() * interviewerAnalysisTemplates.length)
+          ];
+      }
+
+      return {
+        id: `analysis_${dialogue.id}`,
+        timestamp: dialogue.timestamp,
+        analysisType,
+        content,
+        confidence: 80 + Math.random() * 15, // 80-95%的置信度
+        relatedDialogue: dialogue.id,
+      };
+    });
   };
 
   // 辅助函数
@@ -323,19 +664,65 @@ const InterviewReports = () => {
   };
 
   const generateStrengthsFromDialogue = () => {
-    return ["表达逻辑清晰", "专业知识扎实", "学习能力强", "团队协作意识好"];
+    const strengthsPool = [
+      "表达逻辑清晰，思维敏捷",
+      "专业知识扎实，技术基础深厚",
+      "学习能力强，对新技术敏感",
+      "团队协作意识好，沟通能力出色",
+      "项目经验丰富，实践能力强",
+      "问题分析能力出色，能快速定位关键问题",
+      "代码质量意识强，注重工程化规范",
+      "具备一定的架构思维和系统设计能力",
+      "对业务理解深入，具备产品思维",
+      "主动性强，具备自驱力和责任心",
+      "抗压能力好，能在挑战中保持冷静",
+      "技术视野开阔，关注行业发展趋势",
+    ];
+
+    // 随机选择4-6个优势
+    const selectedCount = 4 + Math.floor(Math.random() * 3);
+    const shuffled = strengthsPool.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, selectedCount);
   };
 
   const generateConcernsFromDialogue = () => {
-    return ["某些技术细节需要深入", "项目管理经验可以加强"];
+    const concernsPool = [
+      "某些新兴技术栈了解有限，建议持续学习",
+      "大型项目架构设计经验相对不足",
+      "团队管理和领导力方面可以进一步提升",
+      "对业务领域的深度理解还有提升空间",
+      "在高并发系统设计方面需要更多实践",
+      "跨部门沟通协调经验相对较少",
+      "产品思维和用户体验意识可以加强",
+      "对云原生技术的实践经验有待积累",
+      "数据分析和性能优化技能需要深化",
+      "开源社区参与度相对较低",
+    ];
+
+    // 随机选择2-3个关注点
+    const selectedCount = 2 + Math.floor(Math.random() * 2);
+    const shuffled = concernsPool.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, selectedCount);
   };
 
   const generateAIInsightsFromDialogue = () => {
-    return [
-      "候选人技术基础扎实，逻辑思维清晰",
-      "沟通表达能力强，适合团队协作",
-      "学习意愿强烈，有良好的成长潜力",
+    const insightsPool = [
+      "候选人技术基础扎实，在React生态系统方面有深入理解，能够胜任高级开发岗位",
+      "沟通表达能力强，逻辑思维清晰，适合在团队中承担技术方案设计和评审工作",
+      "学习意愿强烈，对新技术保持敏感度，具备快速适应技术变化的能力",
+      "项目经验丰富，能够结合实际业务场景分析技术问题，展现出良好的工程化思维",
+      "在系统设计和架构方面有一定见解，具备向架构师方向发展的潜力",
+      "表现出良好的代码质量意识和工程规范理解，能够为团队技术标准建设贡献力量",
+      "对性能优化和用户体验有较好的理解，能够在前端性能提升方面发挥作用",
+      "展现出积极的工作态度和责任心，是值得长期培养的技术人才",
+      "具备良好的问题分析和解决能力，能够在复杂技术难题面前保持冷静",
+      "对行业发展趋势有一定认知，能够为技术团队的技术选型提供参考意见",
     ];
+
+    // 随机选择3-4个洞察
+    const selectedCount = 3 + Math.floor(Math.random() * 2);
+    const shuffled = insightsPool.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, selectedCount);
   };
 
   const generateNextSteps = (_type: string, recommendation: string) => {
@@ -522,6 +909,45 @@ const InterviewReports = () => {
       const record = meetingRecords.get(recordKey);
       setSelectedMeetingRecord(record || null);
       setShowMeetingRecord(true);
+    } else {
+      // 如果找不到会议记录，生成一个临时记录
+      const candidate = candidates.find((c) => c.id === candidateId);
+      if (candidate) {
+        const tempDialogues = generateDialogueForRound(
+          {
+            type: interviewType,
+            candidateId,
+            actualStartTime: new Date().toISOString(),
+          },
+          candidate
+        );
+        const tempRecord: InterviewMeetingRecord = {
+          id: `temp_${candidateId}_${interviewType}`,
+          interviewRoundId: `temp_${candidateId}_${interviewType}`,
+          candidateId,
+          interviewType: interviewType as "hr" | "tech_1" | "tech_2" | "vp",
+          interviewerName: getInterviewerName("u001"),
+          startTime: new Date().toISOString(),
+          endTime: new Date(Date.now() + 45 * 60000).toISOString(),
+          duration: 45,
+          dialogues: tempDialogues,
+          aiAnalysis: generateAIAnalysisForDialogue(tempDialogues),
+          summary: {
+            keyTopics: generateKeyTopics(interviewType),
+            candidateStrengths: generateStrengthsFromDialogue(),
+            concerns: generateConcernsFromDialogue(),
+            aiInsights: generateAIInsightsFromDialogue(),
+            nextSteps: generateNextSteps(interviewType, "hire"),
+          },
+          transcription: {
+            quality: "excellent",
+            confidence: 95 + Math.random() * 5,
+            language: "zh-CN",
+          },
+        };
+        setSelectedMeetingRecord(tempRecord);
+        setShowMeetingRecord(true);
+      }
     }
   };
 
