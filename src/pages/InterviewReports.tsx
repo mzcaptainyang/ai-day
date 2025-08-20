@@ -4,11 +4,14 @@ import {
   Brain,
   Calendar,
   CheckCircle,
+  Clock,
   Download,
   FileText,
   Filter,
   Lightbulb,
   MessageSquare,
+  Mic,
+  Play,
   Search,
   Sparkles,
   Star,
@@ -16,10 +19,13 @@ import {
   TrendingDown,
   TrendingUp,
   User,
+  Users,
+  Video,
   Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import candidatesData from "../data/candidates.json";
+import interviewRoundsData from "../data/interviewRounds.json";
 import { Candidate } from "../types";
 
 // AI分析数据接口
@@ -35,25 +41,309 @@ interface AIInsight {
   riskLevel: "low" | "medium" | "high";
 }
 
-const InterviewReports: React.FC = () => {
+// 面试对话记录接口
+interface InterviewDialogue {
+  id: string;
+  timestamp: string;
+  speaker: "interviewer" | "candidate";
+  content: string;
+  duration?: number;
+  sentiment?: "positive" | "neutral" | "negative";
+  keywords?: string[];
+}
+
+// AI对话分析接口
+interface AIDialogueAnalysis {
+  id: string;
+  timestamp: string;
+  analysisType: "sentiment" | "keyword" | "competency" | "concern";
+  content: string;
+  confidence: number;
+  relatedDialogue: string;
+}
+
+// 会议记录接口
+interface InterviewMeetingRecord {
+  id: string;
+  interviewRoundId: string;
+  candidateId: string;
+  interviewType: "hr" | "tech_1" | "tech_2" | "vp";
+  interviewerName: string;
+  startTime: string;
+  endTime: string;
+  duration: number;
+  dialogues: InterviewDialogue[];
+  aiAnalysis: AIDialogueAnalysis[];
+  summary: {
+    keyTopics: string[];
+    candidateStrengths: string[];
+    concerns: string[];
+    aiInsights: string[];
+    nextSteps: string[];
+  };
+  transcription: {
+    quality: "excellent" | "good" | "fair" | "poor";
+    confidence: number;
+    language: string;
+  };
+}
+
+const InterviewReports = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
-  // const [interviews, setInterviews] = useState<InterviewRound[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(
     null
   );
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showMeetingRecord, setShowMeetingRecord] = useState(false);
+  const [selectedMeetingRecord, setSelectedMeetingRecord] =
+    useState<InterviewMeetingRecord | null>(null);
   const [aiInsights, setAiInsights] = useState<Map<string, AIInsight>>(
     new Map()
   );
+  const [meetingRecords, setMeetingRecords] = useState<
+    Map<string, InterviewMeetingRecord>
+  >(new Map());
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     setCandidates(candidatesData as any[]);
-    // setInterviews(interviewRoundsData as InterviewRound[]);
-    // 生成AI分析数据
+    // 生成AI分析数据和会议记录
     generateAIInsights();
+    generateMeetingRecords();
   }, []);
+
+  // 生成模拟面试会议记录
+  const generateMeetingRecords = () => {
+    const records = new Map<string, InterviewMeetingRecord>();
+
+    interviewRoundsData.forEach((round: any) => {
+      const candidate = candidatesData.find((c) => c.id === round.candidateId);
+      if (!candidate) return;
+
+      // 生成模拟对话记录
+      const dialogues: InterviewDialogue[] = generateDialogueForRound(
+        round,
+        candidate
+      );
+
+      // 生成AI分析
+      const aiAnalysis: AIDialogueAnalysis[] =
+        generateAIAnalysisForDialogue(dialogues);
+
+      const record: InterviewMeetingRecord = {
+        id: `meeting_${round.id}`,
+        interviewRoundId: round.id,
+        candidateId: round.candidateId,
+        interviewType: round.type as "hr" | "tech_1" | "tech_2" | "vp",
+        interviewerName: getInterviewerName(round.interviewerId),
+        startTime: round.actualStartTime || round.scheduledTime,
+        endTime: round.actualEndTime || round.scheduledTime,
+        duration: calculateDuration(
+          round.actualStartTime || round.scheduledTime,
+          round.actualEndTime || round.scheduledTime
+        ),
+        dialogues,
+        aiAnalysis,
+        summary: {
+          keyTopics: generateKeyTopics(round.type),
+          candidateStrengths: generateStrengthsFromDialogue(),
+          concerns: generateConcernsFromDialogue(),
+          aiInsights: generateAIInsightsFromDialogue(),
+          nextSteps: generateNextSteps(round.type, round.recommendation),
+        },
+        transcription: {
+          quality: "excellent",
+          confidence: 95 + Math.random() * 5,
+          language: "zh-CN",
+        },
+      };
+
+      records.set(record.id, record);
+    });
+
+    setMeetingRecords(records);
+  };
+
+  // 辅助函数：生成对话内容
+  const generateDialogueForRound = (
+    round: any,
+    candidate: any
+  ): InterviewDialogue[] => {
+    const dialogues: InterviewDialogue[] = [];
+    let timestamp = new Date(round.actualStartTime || round.scheduledTime);
+
+    if (round.type === "hr") {
+      // HR面试对话
+      dialogues.push(
+        {
+          id: "d1",
+          timestamp: timestamp.toISOString(),
+          speaker: "interviewer",
+          content: "您好，欢迎来到我们公司面试。请先简单介绍一下自己吧。",
+          sentiment: "positive",
+          keywords: ["介绍", "面试开场"],
+        },
+        {
+          id: "d2",
+          timestamp: addMinutes(timestamp, 1).toISOString(),
+          speaker: "candidate",
+          content: `我叫${candidate.name}，有${
+            candidate.resume.experience.length
+          }年的工作经验，主要专注于${candidate.resume.skills.technical
+            .slice(0, 3)
+            .join("、")}等技术领域。我在${
+            candidate.resume.experience[0]?.company
+          }工作期间，负责了多个重要项目的开发...`,
+          sentiment: "positive",
+          keywords: ["自我介绍", "工作经验", "技术技能"],
+        },
+        {
+          id: "d3",
+          timestamp: addMinutes(timestamp, 3).toISOString(),
+          speaker: "interviewer",
+          content:
+            "很好，您的经验很丰富。为什么想要离开目前的公司，选择加入我们呢？",
+          sentiment: "neutral",
+          keywords: ["离职原因", "选择公司"],
+        },
+        {
+          id: "d4",
+          timestamp: addMinutes(timestamp, 4).toISOString(),
+          speaker: "candidate",
+          content:
+            "主要是希望能在一个更大的平台上发挥自己的能力，贵公司的技术实力和企业文化都很吸引我，我相信能在这里获得更好的职业发展。",
+          sentiment: "positive",
+          keywords: ["职业发展", "企业文化", "技术实力"],
+        }
+      );
+    } else if (round.type === "tech_1") {
+      // 技术一面对话
+      dialogues.push(
+        {
+          id: "d1",
+          timestamp: timestamp.toISOString(),
+          speaker: "interviewer",
+          content:
+            "我们开始技术面试，首先请您介绍一下React的生命周期，以及Hooks的工作原理。",
+          sentiment: "neutral",
+          keywords: ["React", "生命周期", "Hooks", "技术基础"],
+        },
+        {
+          id: "d2",
+          timestamp: addMinutes(timestamp, 1).toISOString(),
+          speaker: "candidate",
+          content:
+            "React的生命周期分为三个阶段：挂载、更新和卸载。Hooks是React 16.8引入的新特性，它让我们可以在函数组件中使用状态和其他React特性。useState用于状态管理，useEffect用于副作用处理...",
+          sentiment: "positive",
+          keywords: ["React生命周期", "useState", "useEffect", "函数组件"],
+        },
+        {
+          id: "d3",
+          timestamp: addMinutes(timestamp, 5).toISOString(),
+          speaker: "interviewer",
+          content: "很好，那您能说说如何优化React应用的性能吗？",
+          sentiment: "positive",
+          keywords: ["性能优化", "React优化"],
+        },
+        {
+          id: "d4",
+          timestamp: addMinutes(timestamp, 6).toISOString(),
+          speaker: "candidate",
+          content:
+            "React性能优化有很多方法：1. 使用React.memo避免不必要的重渲染；2. 使用useMemo和useCallback缓存计算结果和函数；3. 代码分割和懒加载；4. 虚拟列表处理大数据；5. 使用生产环境构建...",
+          sentiment: "positive",
+          keywords: [
+            "React.memo",
+            "useMemo",
+            "useCallback",
+            "代码分割",
+            "虚拟列表",
+          ],
+        }
+      );
+    }
+
+    return dialogues;
+  };
+
+  // 生成AI对话分析
+  const generateAIAnalysisForDialogue = (
+    dialogues: InterviewDialogue[]
+  ): AIDialogueAnalysis[] => {
+    return dialogues.map((dialogue, index) => ({
+      id: `analysis_${dialogue.id}`,
+      timestamp: dialogue.timestamp,
+      analysisType:
+        index % 4 === 0
+          ? "sentiment"
+          : index % 4 === 1
+          ? "keyword"
+          : index % 4 === 2
+          ? "competency"
+          : "concern",
+      content:
+        dialogue.speaker === "candidate"
+          ? "候选人回答逻辑清晰，专业知识扎实，表达能力强"
+          : "面试官提问专业且有针对性",
+      confidence: 85 + Math.random() * 10,
+      relatedDialogue: dialogue.id,
+    }));
+  };
+
+  // 辅助函数
+  const addMinutes = (date: Date, minutes: number) => {
+    return new Date(date.getTime() + minutes * 60000);
+  };
+
+  const calculateDuration = (start: string, end: string) => {
+    return Math.round(
+      (new Date(end).getTime() - new Date(start).getTime()) / 60000
+    );
+  };
+
+  const getInterviewerName = (interviewerId: string) => {
+    const names = {
+      u001: "王HR",
+      u002: "李技术",
+      u003: "张架构师",
+      u004: "陈VP",
+    };
+    return names[interviewerId as keyof typeof names] || "面试官";
+  };
+
+  const generateKeyTopics = (type: string) => {
+    const topics = {
+      hr: ["自我介绍", "工作经验", "离职原因", "职业规划", "薪资期望"],
+      tech_1: ["技术基础", "项目经验", "问题解决", "代码能力", "学习能力"],
+      tech_2: ["系统设计", "架构思维", "性能优化", "团队协作", "技术深度"],
+      vp: ["战略思维", "领导能力", "业务理解", "团队管理", "文化匹配"],
+    };
+    return topics[type as keyof typeof topics] || [];
+  };
+
+  const generateStrengthsFromDialogue = () => {
+    return ["表达逻辑清晰", "专业知识扎实", "学习能力强", "团队协作意识好"];
+  };
+
+  const generateConcernsFromDialogue = () => {
+    return ["某些技术细节需要深入", "项目管理经验可以加强"];
+  };
+
+  const generateAIInsightsFromDialogue = () => {
+    return [
+      "候选人技术基础扎实，逻辑思维清晰",
+      "沟通表达能力强，适合团队协作",
+      "学习意愿强烈，有良好的成长潜力",
+    ];
+  };
+
+  const generateNextSteps = (_type: string, recommendation: string) => {
+    if (recommendation === "pass") {
+      return ["安排下一轮面试", "准备相关技术题目", "通知候选人面试结果"];
+    }
+    return ["提供面试反馈", "建议候选人提升相关技能", "后续保持联系"];
+  };
 
   // 生成AI分析数据
   const generateAIInsights = () => {
@@ -213,6 +503,26 @@ const InterviewReports: React.FC = () => {
   const handleViewReport = (candidate: Candidate) => {
     setSelectedCandidate(candidate);
     setShowReportModal(true);
+  };
+
+  const handleViewMeetingRecord = (
+    candidateId: string,
+    interviewType: string
+  ) => {
+    // 查找对应的会议记录
+    const recordKey = Array.from(meetingRecords.keys()).find((key) => {
+      const record = meetingRecords.get(key);
+      return (
+        record?.candidateId === candidateId &&
+        record?.interviewType === interviewType
+      );
+    });
+
+    if (recordKey) {
+      const record = meetingRecords.get(recordKey);
+      setSelectedMeetingRecord(record || null);
+      setShowMeetingRecord(true);
+    }
   };
 
   return (
@@ -648,6 +958,21 @@ const InterviewReports: React.FC = () => {
                             </div>
 
                             {getRecommendationBadge(report.recommendation)}
+
+                            {/* 会议记录按钮 */}
+                            <button
+                              onClick={() =>
+                                selectedCandidate &&
+                                handleViewMeetingRecord(
+                                  selectedCandidate.id,
+                                  report.interviewType
+                                )
+                              }
+                              className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-3 py-2 rounded-lg hover:from-indigo-600 hover:to-purple-700 flex items-center text-sm font-medium transition-all shadow-md hover:shadow-lg"
+                            >
+                              <Video className="h-4 w-4 mr-2" />
+                              会议纪要
+                            </button>
                           </div>
                         </div>
 
@@ -655,11 +980,34 @@ const InterviewReports: React.FC = () => {
                         <div className="mt-3 bg-blue-50 p-3 rounded-lg border-l-4 border-blue-400">
                           <div className="flex items-start">
                             <Bot className="h-4 w-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                            <div className="text-xs text-blue-700 leading-relaxed">
+                            <div className="flex-1 text-xs text-blue-700 leading-relaxed">
                               <span className="font-medium">AI分析摘要: </span>
                               {report.aiAnalysis}
                             </div>
                           </div>
+                        </div>
+
+                        {/* 会议记录按钮 */}
+                        <div className="mt-3 flex items-center justify-between">
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Video className="h-3 w-3 mr-1" />
+                            <span>会议已录制</span>
+                            <span className="ml-2 bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                              AI转录完成
+                            </span>
+                          </div>
+                          <button
+                            onClick={() =>
+                              handleViewMeetingRecord(
+                                candidate.id,
+                                report.interviewType
+                              )
+                            }
+                            className="text-xs bg-gradient-to-r from-purple-500 to-blue-500 text-white px-3 py-1 rounded-lg hover:from-purple-600 hover:to-blue-600 flex items-center transition-all"
+                          >
+                            <MessageSquare className="h-3 w-3 mr-1" />
+                            查看会议纪要
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -979,162 +1327,169 @@ const InterviewReports: React.FC = () => {
                 </span>
               </h3>
 
-              {generateMockReport(selectedCandidate).map((report, index) => (
-                <div key={report.id} className="mb-8 relative">
-                  {/* 时间线连接线 */}
-                  {index < generateMockReport(selectedCandidate).length - 1 && (
-                    <div className="absolute left-6 top-20 w-px h-full bg-gradient-to-b from-blue-300 to-purple-300 z-0"></div>
-                  )}
+              {generateMockReport(selectedCandidate).map(
+                (report, reportIndex) => (
+                  <div key={report.id} className="mb-8 relative">
+                    {/* 时间线连接线 */}
+                    {reportIndex <
+                      generateMockReport(selectedCandidate).length - 1 && (
+                      <div className="absolute left-6 top-20 w-px h-full bg-gradient-to-b from-blue-300 to-purple-300 z-0"></div>
+                    )}
 
-                  <div className="card p-8 relative z-10 border-l-4 border-l-primary-500 bg-gradient-to-r from-gray-50 to-blue-50">
-                    {/* 面试轮次标题 */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center">
-                        <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                          {index + 1}
+                    <div className="card p-8 relative z-10 border-l-4 border-l-primary-500 bg-gradient-to-r from-gray-50 to-blue-50">
+                      {/* 面试轮次标题 */}
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center">
+                          <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                            {reportIndex + 1}
+                          </div>
+                          <div>
+                            <h4 className="text-xl font-bold text-gray-900">
+                              {report.interviewType === "hr"
+                                ? "🤝 HR面试报告"
+                                : report.interviewType === "tech_1"
+                                ? "💻 技术一面报告"
+                                : report.interviewType === "tech_2"
+                                ? "🏗️ 技术二面报告"
+                                : "🎯 VP面试报告"}
+                            </h4>
+                            <p className="text-sm text-gray-600 mt-1">
+                              面试官: {report.interviewerName} •
+                              {new Date(report.date).toLocaleDateString(
+                                "zh-CN"
+                              )}{" "}
+                              •
+                              {Math.round(
+                                (new Date(report.date).getTime() -
+                                  new Date("2024-01-15").getTime()) /
+                                  (1000 * 60)
+                              )}
+                              分钟
+                            </p>
+                          </div>
                         </div>
+
+                        {/* 评分对比 */}
+                        <div className="text-right">
+                          <div className="flex items-center space-x-4 mb-2">
+                            <div className="text-center">
+                              <div
+                                className={`text-2xl font-bold ${getScoreColor(
+                                  report.overallScore
+                                )}`}
+                              >
+                                {report.overallScore}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                传统评分
+                              </div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-blue-600">
+                                {report.aiScore}
+                              </div>
+                              <div className="text-xs text-blue-600 flex items-center">
+                                <Brain className="h-3 w-3 mr-1" />
+                                AI评分
+                              </div>
+                            </div>
+                          </div>
+                          {getRecommendationBadge(report.recommendation)}
+                        </div>
+                      </div>
+
+                      {/* AI分析横幅 */}
+                      <div className="mb-6 bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-xl text-white">
+                        <div className="flex items-start">
+                          <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3 mt-1">
+                            <Bot className="h-6 w-6 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <h5 className="text-lg font-bold mb-2 flex items-center">
+                              🤖 AI深度分析
+                              <span className="ml-2 text-xs bg-white bg-opacity-20 px-2 py-1 rounded-full">
+                                智能评估
+                              </span>
+                            </h5>
+                            <p className="text-blue-100 leading-relaxed text-sm">
+                              {report.aiAnalysis}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
-                          <h4 className="text-xl font-bold text-gray-900">
-                            {report.interviewType === "hr"
-                              ? "🤝 HR面试报告"
-                              : report.interviewType === "tech_1"
-                              ? "💻 技术一面报告"
-                              : report.interviewType === "tech_2"
-                              ? "🏗️ 技术二面报告"
-                              : "🎯 VP面试报告"}
-                          </h4>
-                          <p className="text-sm text-gray-600 mt-1">
-                            面试官: {report.interviewerName} •
-                            {new Date(report.date).toLocaleDateString("zh-CN")}{" "}
-                            •
-                            {Math.round(
-                              (new Date(report.date).getTime() -
-                                new Date("2024-01-15").getTime()) /
-                                (1000 * 60)
-                            )}
-                            分钟
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* 评分对比 */}
-                      <div className="text-right">
-                        <div className="flex items-center space-x-4 mb-2">
-                          <div className="text-center">
-                            <div
-                              className={`text-2xl font-bold ${getScoreColor(
-                                report.overallScore
-                              )}`}
-                            >
-                              {report.overallScore}
+                          <h5 className="font-bold text-gray-900 mb-4 flex items-center">
+                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                              <TrendingUp className="h-5 w-5 text-green-600" />
                             </div>
-                            <div className="text-xs text-gray-500">
-                              传统评分
-                            </div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-blue-600">
-                              {report.aiScore}
-                            </div>
-                            <div className="text-xs text-blue-600 flex items-center">
-                              <Brain className="h-3 w-3 mr-1" />
-                              AI评分
-                            </div>
-                          </div>
-                        </div>
-                        {getRecommendationBadge(report.recommendation)}
-                      </div>
-                    </div>
-
-                    {/* AI分析横幅 */}
-                    <div className="mb-6 bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-xl text-white">
-                      <div className="flex items-start">
-                        <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3 mt-1">
-                          <Bot className="h-6 w-6 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h5 className="text-lg font-bold mb-2 flex items-center">
-                            🤖 AI深度分析
-                            <span className="ml-2 text-xs bg-white bg-opacity-20 px-2 py-1 rounded-full">
-                              智能评估
-                            </span>
+                            优势表现
                           </h5>
-                          <p className="text-blue-100 leading-relaxed text-sm">
-                            {report.aiAnalysis}
-                          </p>
+                          <ul className="space-y-3">
+                            {report.strengths.map((strength, strengthIndex) => (
+                              <li
+                                key={strengthIndex}
+                                className="flex items-start bg-green-50 p-3 rounded-lg"
+                              >
+                                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                                  <span className="text-white font-bold text-xs">
+                                    {strengthIndex + 1}
+                                  </span>
+                                </div>
+                                <span className="text-sm text-gray-700 font-medium">
+                                  {strength}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div>
+                          <h5 className="font-bold text-gray-900 mb-4 flex items-center">
+                            <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-2">
+                              <TrendingDown className="h-5 w-5 text-orange-600" />
+                            </div>
+                            改进建议
+                          </h5>
+                          <ul className="space-y-3">
+                            {report.weaknesses.map(
+                              (weakness, weaknessIndex) => (
+                                <li
+                                  key={weaknessIndex}
+                                  className="flex items-start bg-orange-50 p-3 rounded-lg"
+                                >
+                                  <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                                    <span className="text-white font-bold text-xs">
+                                      {weaknessIndex + 1}
+                                    </span>
+                                  </div>
+                                  <span className="text-sm text-gray-700 font-medium">
+                                    {weakness}
+                                  </span>
+                                </li>
+                              )
+                            )}
+                          </ul>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <div>
+                      {/* 详细反馈 */}
+                      <div className="mt-8 bg-white p-6 rounded-xl border border-gray-200">
                         <h5 className="font-bold text-gray-900 mb-4 flex items-center">
-                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-2">
-                            <TrendingUp className="h-5 w-5 text-green-600" />
-                          </div>
-                          优势表现
+                          <MessageSquare className="h-5 w-5 text-blue-500 mr-2" />
+                          面试官详细反馈
                         </h5>
-                        <ul className="space-y-3">
-                          {report.strengths.map((strength, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-start bg-green-50 p-3 rounded-lg"
-                            >
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
-                                <span className="text-white font-bold text-xs">
-                                  {idx + 1}
-                                </span>
-                              </div>
-                              <span className="text-sm text-gray-700 font-medium">
-                                {strength}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h5 className="font-bold text-gray-900 mb-4 flex items-center">
-                          <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-2">
-                            <TrendingDown className="h-5 w-5 text-orange-600" />
-                          </div>
-                          改进建议
-                        </h5>
-                        <ul className="space-y-3">
-                          {report.weaknesses.map((weakness, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-start bg-orange-50 p-3 rounded-lg"
-                            >
-                              <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
-                                <span className="text-white font-bold text-xs">
-                                  {idx + 1}
-                                </span>
-                              </div>
-                              <span className="text-sm text-gray-700 font-medium">
-                                {weakness}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* 详细反馈 */}
-                    <div className="mt-8 bg-white p-6 rounded-xl border border-gray-200">
-                      <h5 className="font-bold text-gray-900 mb-4 flex items-center">
-                        <MessageSquare className="h-5 w-5 text-blue-500 mr-2" />
-                        面试官详细反馈
-                      </h5>
-                      <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-300">
-                        <p className="text-gray-700 leading-relaxed italic">
-                          "{report.detailedFeedback}"
-                        </p>
+                        <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-300">
+                          <p className="text-gray-700 leading-relaxed italic">
+                            "{report.detailedFeedback}"
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
 
             {/* AI多维度深度分析 - 增强版 */}
@@ -1279,7 +1634,7 @@ const InterviewReports: React.FC = () => {
                       <div className="space-y-6">
                         {aiInsights
                           .get(selectedCandidate.id)!
-                          .personalityTraits.map((trait, index) => (
+                          .personalityTraits.map((trait) => (
                             <div key={trait.trait} className="relative">
                               {/* 特质卡片 */}
                               <div className="bg-white bg-opacity-80 p-5 rounded-xl shadow-sm border border-green-100">
@@ -1548,6 +1903,409 @@ const InterviewReports: React.FC = () => {
                     <div className="w-2 h-2 bg-green-400 rounded-full ml-2 animate-pulse"></div>
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 面试会议记录模态框 */}
+      {showMeetingRecord && selectedMeetingRecord && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-10 mx-auto p-5 border w-11/12 max-w-7xl shadow-lg rounded-md bg-white">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <Video className="h-7 w-7 text-purple-500 mr-3" />
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    面试会议记录 -{" "}
+                    {selectedMeetingRecord.interviewType === "hr"
+                      ? "HR面试"
+                      : selectedMeetingRecord.interviewType === "tech_1"
+                      ? "技术一面"
+                      : selectedMeetingRecord.interviewType === "tech_2"
+                      ? "技术二面"
+                      : "VP面试"}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1 flex items-center">
+                    <Clock className="h-4 w-4 mr-1" />
+                    {new Date(selectedMeetingRecord.startTime).toLocaleString(
+                      "zh-CN"
+                    )}{" "}
+                    • 时长 {selectedMeetingRecord.duration} 分钟 • 面试官:{" "}
+                    {selectedMeetingRecord.interviewerName}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowMeetingRecord(false)}
+                className="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* 会议概览信息 */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
+                <div className="flex items-center">
+                  <div className="p-2 bg-green-500 rounded-lg">
+                    <Mic className="h-5 w-5 text-white" />
+                  </div>
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-green-800">
+                      转录质量
+                    </div>
+                    <div className="text-lg font-bold text-green-600 capitalize">
+                      {selectedMeetingRecord.transcription.quality}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                <div className="flex items-center">
+                  <div className="p-2 bg-blue-500 rounded-lg">
+                    <Brain className="h-5 w-5 text-white" />
+                  </div>
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-blue-800">
+                      AI置信度
+                    </div>
+                    <div className="text-lg font-bold text-blue-600">
+                      {Math.round(
+                        selectedMeetingRecord.transcription.confidence
+                      )}
+                      %
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+                <div className="flex items-center">
+                  <div className="p-2 bg-purple-500 rounded-lg">
+                    <MessageSquare className="h-5 w-5 text-white" />
+                  </div>
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-purple-800">
+                      对话轮次
+                    </div>
+                    <div className="text-lg font-bold text-purple-600">
+                      {selectedMeetingRecord.dialogues.length}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
+                <div className="flex items-center">
+                  <div className="p-2 bg-orange-500 rounded-lg">
+                    <Sparkles className="h-5 w-5 text-white" />
+                  </div>
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-orange-800">
+                      AI分析
+                    </div>
+                    <div className="text-lg font-bold text-orange-600">
+                      {selectedMeetingRecord.aiAnalysis.length}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* 对话记录 */}
+              <div className="lg:col-span-2">
+                <div className="card p-6">
+                  <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                    <MessageSquare className="h-6 w-6 text-blue-500 mr-3" />
+                    面试对话全记录
+                    <span className="ml-auto text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
+                      AI实时转录
+                    </span>
+                  </h4>
+
+                  <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                    {selectedMeetingRecord.dialogues.map((dialogue) => (
+                      <div
+                        key={dialogue.id}
+                        className="flex items-start space-x-4"
+                      >
+                        {/* 说话者头像 */}
+                        <div
+                          className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-medium ${
+                            dialogue.speaker === "interviewer"
+                              ? "bg-gradient-to-r from-blue-500 to-blue-600"
+                              : "bg-gradient-to-r from-green-500 to-green-600"
+                          }`}
+                        >
+                          {dialogue.speaker === "interviewer" ? (
+                            <Users className="h-5 w-5" />
+                          ) : (
+                            <User className="h-5 w-5" />
+                          )}
+                        </div>
+
+                        {/* 对话内容 */}
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <span className="text-sm font-medium text-gray-900">
+                              {dialogue.speaker === "interviewer"
+                                ? "面试官"
+                                : "候选人"}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {new Date(dialogue.timestamp).toLocaleTimeString(
+                                "zh-CN"
+                              )}
+                            </span>
+                            {dialogue.sentiment && (
+                              <span
+                                className={`text-xs px-2 py-1 rounded-full ${
+                                  dialogue.sentiment === "positive"
+                                    ? "bg-green-100 text-green-700"
+                                    : dialogue.sentiment === "negative"
+                                    ? "bg-red-100 text-red-700"
+                                    : "bg-gray-100 text-gray-700"
+                                }`}
+                              >
+                                {dialogue.sentiment === "positive"
+                                  ? "积极"
+                                  : dialogue.sentiment === "negative"
+                                  ? "消极"
+                                  : "中性"}
+                              </span>
+                            )}
+                          </div>
+
+                          <div
+                            className={`p-4 rounded-lg ${
+                              dialogue.speaker === "interviewer"
+                                ? "bg-blue-50 border-l-4 border-blue-400"
+                                : "bg-green-50 border-l-4 border-green-400"
+                            }`}
+                          >
+                            <p className="text-gray-700 leading-relaxed">
+                              {dialogue.content}
+                            </p>
+
+                            {dialogue.keywords &&
+                              dialogue.keywords.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mt-3">
+                                  {dialogue.keywords.map((keyword, idx) => (
+                                    <span
+                                      key={idx}
+                                      className="text-xs bg-white bg-opacity-60 text-gray-600 px-2 py-1 rounded-full border"
+                                    >
+                                      {keyword}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                          </div>
+
+                          {/* AI实时分析 */}
+                          {selectedMeetingRecord.aiAnalysis
+                            .filter(
+                              (analysis) =>
+                                analysis.relatedDialogue === dialogue.id
+                            )
+                            .map((analysis) => (
+                              <div
+                                key={analysis.id}
+                                className="mt-3 bg-gradient-to-r from-purple-50 to-indigo-50 p-3 rounded-lg border border-purple-200"
+                              >
+                                <div className="flex items-start">
+                                  <Bot className="h-4 w-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                                  <div className="flex-1">
+                                    <div className="flex items-center space-x-2 mb-1">
+                                      <span className="text-xs font-medium text-purple-800">
+                                        AI{" "}
+                                        {analysis.analysisType === "sentiment"
+                                          ? "情感分析"
+                                          : analysis.analysisType === "keyword"
+                                          ? "关键词提取"
+                                          : analysis.analysisType ===
+                                            "competency"
+                                          ? "能力评估"
+                                          : "风险识别"}
+                                      </span>
+                                      <span className="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">
+                                        置信度 {Math.round(analysis.confidence)}
+                                        %
+                                      </span>
+                                    </div>
+                                    <p className="text-xs text-purple-700">
+                                      {analysis.content}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* AI会议纪要 */}
+              <div className="lg:col-span-1">
+                <div className="space-y-6">
+                  {/* 关键话题 */}
+                  <div className="card p-5">
+                    <h5 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <Target className="h-5 w-5 text-blue-500 mr-2" />
+                      关键话题
+                    </h5>
+                    <div className="space-y-2">
+                      {selectedMeetingRecord.summary.keyTopics.map(
+                        (topic, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center text-sm bg-blue-50 p-2 rounded"
+                          >
+                            <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                            {topic}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 候选人优势 */}
+                  <div className="card p-5">
+                    <h5 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <TrendingUp className="h-5 w-5 text-green-500 mr-2" />
+                      候选人优势
+                    </h5>
+                    <div className="space-y-2">
+                      {selectedMeetingRecord.summary.candidateStrengths.map(
+                        (strength, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center text-sm bg-green-50 p-2 rounded"
+                          >
+                            <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
+                            {strength}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 关注点 */}
+                  {selectedMeetingRecord.summary.concerns.length > 0 && (
+                    <div className="card p-5">
+                      <h5 className="font-bold text-gray-900 mb-4 flex items-center">
+                        <TrendingDown className="h-5 w-5 text-orange-500 mr-2" />
+                        关注点
+                      </h5>
+                      <div className="space-y-2">
+                        {selectedMeetingRecord.summary.concerns.map(
+                          (concern, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center text-sm bg-orange-50 p-2 rounded"
+                            >
+                              <div className="w-2 h-2 bg-orange-500 rounded-full mr-2 flex-shrink-0"></div>
+                              {concern}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* AI智能洞察 */}
+                  <div className="card p-5">
+                    <h5 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <Sparkles className="h-5 w-5 text-purple-500 mr-2" />
+                      AI智能洞察
+                    </h5>
+                    <div className="space-y-3">
+                      {selectedMeetingRecord.summary.aiInsights.map(
+                        (insight, index) => (
+                          <div
+                            key={index}
+                            className="bg-gradient-to-r from-purple-50 to-indigo-50 p-3 rounded-lg border border-purple-200"
+                          >
+                            <div className="flex items-start">
+                              <Lightbulb className="h-4 w-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                              <p className="text-sm text-purple-700">
+                                {insight}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 后续步骤 */}
+                  <div className="card p-5">
+                    <h5 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <Calendar className="h-5 w-5 text-indigo-500 mr-2" />
+                      后续步骤
+                    </h5>
+                    <div className="space-y-2">
+                      {selectedMeetingRecord.summary.nextSteps.map(
+                        (step, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center text-sm bg-indigo-50 p-2 rounded"
+                          >
+                            <div className="w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                              <span className="text-white text-xs font-bold">
+                                {index + 1}
+                              </span>
+                            </div>
+                            {step}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 操作按钮 */}
+            <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
+              <div className="flex items-center text-sm text-gray-600">
+                <Bot className="h-4 w-4 mr-2" />
+                <span>
+                  AI分析于 {new Date().toLocaleDateString("zh-CN")} 生成
+                </span>
+              </div>
+
+              <div className="flex space-x-3">
+                <button className="btn btn-secondary flex items-center">
+                  <Download className="h-4 w-4 mr-2" />
+                  导出会议纪要
+                </button>
+                <button className="btn btn-secondary flex items-center">
+                  <Play className="h-4 w-4 mr-2" />
+                  播放录音
+                </button>
+                <button className="btn btn-primary flex items-center">
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  AI问答助手
+                </button>
               </div>
             </div>
           </div>
