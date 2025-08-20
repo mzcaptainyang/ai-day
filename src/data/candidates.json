@@ -157,5 +157,121 @@
     "status": "screening",
     "createdAt": "2024-01-20T14:30:00Z",
     "interviewRounds": []
+  },
+  {
+    "id": "c003",
+    "name": "张伟",
+    "email": "zhang.wei@email.com",
+    "phone": "13800138003",
+    "resume": {
+      "personalInfo": {
+        "name": "张伟",
+        "email": "zhang.wei@email.com",
+        "phone": "13800138003",
+        "location": "北京市海淀区"
+      },
+      "education": [
+        {
+          "degree": "本科",
+          "school": "北京航空航天大学",
+          "major": "软件工程",
+          "graduationYear": 2018
+        }
+      ],
+      "experience": [
+        {
+          "company": "字节跳动",
+          "position": "高级后端工程师",
+          "duration": "2021.03 - 2024.01",
+          "responsibilities": [
+            "负责抖音电商后端核心服务架构设计与开发",
+            "基于DDD领域驱动设计实现微服务架构重构",
+            "负责高并发订单系统的性能优化和稳定性保障",
+            "指导团队进行代码重构和技术升级"
+          ],
+          "achievements": [
+            "支持双十一峰值QPS达到50万+，系统零故障",
+            "主导DDD架构重构，代码可维护性提升60%",
+            "订单处理性能优化3倍，响应时间降低70%"
+          ]
+        },
+        {
+          "company": "美团",
+          "position": "Golang开发工程师",
+          "duration": "2018.07 - 2021.02",
+          "responsibilities": [
+            "负责美团外卖配送系统后端开发",
+            "参与微服务架构设计和API开发",
+            "负责Redis缓存架构优化和数据库性能调优",
+            "参与技术选型和架构评审"
+          ],
+          "achievements": [
+            "配送系统日处理订单量突破1000万单",
+            "缓存命中率优化到95%以上",
+            "参与系统容器化改造，部署效率提升5倍"
+          ]
+        }
+      ],
+      "skills": {
+        "technical": [
+          "Golang",
+          "DDD",
+          "微服务",
+          "Docker",
+          "Kubernetes",
+          "Redis",
+          "MySQL",
+          "MongoDB",
+          "RabbitMQ",
+          "Kafka",
+          "gRPC",
+          "Gin",
+          "Echo"
+        ],
+        "languages": ["中文(母语)", "英语(CET-6)"],
+        "certifications": ["AWS解决方案架构师", "Kubernetes管理员认证"]
+      },
+      "projects": [
+        {
+          "name": "电商订单系统DDD重构",
+          "description": "基于领域驱动设计重构电商订单系统，采用六边形架构和事件溯源",
+          "technologies": [
+            "Golang",
+            "DDD",
+            "Event Sourcing",
+            "CQRS",
+            "Docker",
+            "Kubernetes"
+          ],
+          "achievements": [
+            "业务逻辑复杂度降低50%",
+            "代码可测试性提升80%",
+            "新功能开发周期缩短40%",
+            "系统可扩展性大幅提升"
+          ]
+        },
+        {
+          "name": "高性能配送调度系统",
+          "description": "设计实现美团配送智能调度系统，支持实时路径优化和动态调度",
+          "technologies": [
+            "Golang",
+            "Redis Cluster",
+            "MongoDB",
+            "RabbitMQ",
+            "算法优化"
+          ],
+          "achievements": [
+            "配送效率提升25%",
+            "调度算法响应时间控制在100ms以内",
+            "支持10万+骑手实时调度",
+            "获得技术创新奖"
+          ]
+        }
+      ]
+    },
+    "appliedPosition": "job003",
+    "status": "interviewing",
+    "createdAt": "2024-01-22T10:15:00Z",
+    "interviewRounds": []
   }
 ]

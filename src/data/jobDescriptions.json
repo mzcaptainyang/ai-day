@@ -74,5 +74,45 @@
     },
     "location": "北京",
     "type": "full-time"
+  },
+  {
+    "id": "job003",
+    "title": "资深Golang后端工程师",
+    "department": "技术部",
+    "level": "senior",
+    "requirements": [
+      "5年以上Golang开发经验",
+      "深度理解DDD领域驱动设计",
+      "熟悉微服务架构和分布式系统",
+      "有高并发系统设计和优化经验",
+      "优秀的系统设计和架构能力"
+    ],
+    "responsibilities": [
+      "负责核心业务系统的架构设计和开发",
+      "基于DDD进行系统重构和优化",
+      "指导团队进行技术选型和最佳实践",
+      "参与高并发系统的性能调优",
+      "推进DevOps和云原生技术实践"
+    ],
+    "skills": {
+      "technical": [
+        "Golang",
+        "DDD",
+        "微服务",
+        "Docker",
+        "Kubernetes",
+        "Redis",
+        "MySQL",
+        "消息队列",
+        "分布式系统"
+      ],
+      "soft": ["系统设计", "架构思维", "团队协作", "技术领导力"]
+    },
+    "salaryRange": {
+      "min": 30000,
+      "max": 50000
+    },
+    "location": "北京",
+    "type": "full-time"
   }
 ]

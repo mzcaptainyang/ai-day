@@ -22,6 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: "仪表盘", href: "/dashboard", icon: Home },
     { name: "候选人管理", href: "/candidates", icon: Users },
     { name: "面试安排", href: "/interviews", icon: Calendar },
+    { name: "AI 面试题", href: "/ai-questions", icon: Brain },
     { name: "面试报告", href: "/reports", icon: FileText },
     { name: "数据分析", href: "/analysis", icon: BarChart3 },
   ];
