@@ -13,9 +13,9 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Navigate to="/highlights" replace />} />
         <Route path="/highlights" element={<ProjectHighlights />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/candidates" element={<CandidateManagement />} />
         <Route path="/interviews" element={<InterviewSchedule />} />
         <Route path="/ai-questions" element={<AIInterviewQuestions />} />
